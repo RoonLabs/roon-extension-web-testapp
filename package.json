@@ -1,0 +1,21 @@
+{
+  "name": "roon-extension-web-testapp",
+  "version": "1.0.0",
+  "description": "Roon Extension to test Roon API functionality in a Web Browser",
+  "main": "app.js",
+  "author": "Roon Labs, LLC",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-roon-api": "github:roonlabs/node-roon-api",
+    "node-roon-api-image": "github:roonlabs/node-roon-api-image",
+    "node-roon-api-settings": "github:roonlabs/node-roon-api-settings",
+    "node-roon-api-status": "github:roonlabs/node-roon-api-status",
+    "node-roon-api-transport": "github:roonlabs/node-roon-api-transport",
+    "vue": "^1.0.26"
+  },
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "minifyify": "^7.3.3",
+    "partialify": "^3.1.6"
+  }
+}

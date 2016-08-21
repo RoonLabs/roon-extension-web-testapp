@@ -1,0 +1,53 @@
+<style>
+.zonetitle {
+    padding-top: 1em;
+    font-size: 2em;
+}
+.nowplaying {
+    padding-top: 1em;
+}
+
+.nowplaying .buttons {
+    padding-top: 1em;
+}
+.nowplaying .buttons > button {
+    margin-right: 1em;
+    width: 100px;
+}
+
+</style>
+
+<div>
+    <div v-if='status == "connecting"'>
+        Connecting...
+    </div>
+    <div v-else>
+        Zone: &nbsp; <select v-model="current_zone_id">
+            <option v-for="zone in zones" :value="zone.zone_id">{{ zone.display_name }}</option>
+        </select>
+
+        <div v-if='zone' class='zonetitle'>
+            {{zone.display_name}} ({{zone.state}})
+        </div>
+        <div class='nowplaying' v-if='zone && zone.now_playing'>
+            <div>
+                <div style='display: inline-block;'>
+                    <zone-image v-if='zone.now_playing.image_key' :zone='zone'></zone-image>
+                </div>
+                <div style='display: inline-block;'>
+                    <div>{{zone.now_playing.three_line.line1}}</div>
+                    <div>{{zone.now_playing.three_line.line2}}</div>
+                    <div>{{zone.now_playing.three_line.line3}}</div>
+                </div>
+            </div>
+
+            <div class='buttons' v-if='zone.state != "loading"'>
+                <button @click="transport_playpause">{{ zone.state == 'playing' ? 'Pause' : 'Play' }}</button>
+                <button @click="transport_stop">Stop</button>
+                <button @click="transport_previous">&lt;&lt;</button>
+                <button @click="transport_next">&gt;&gt;</button>
+            </div>
+
+        </div>
+    </div>
+</div>
