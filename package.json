@@ -5,6 +5,10 @@
   "main": "app.js",
   "author": "Roon Labs, LLC",
   "license": "Apache-2.0",
+  "scripts": {
+      "build": "browserify app.js -o bundle.js -t partialify -u xml2js -u ws -u fs",
+      "dev": "watchify -d app.js -o bundle.js -t partialify -u xml2js -u ws -u fs"
+  },
   "dependencies": {
     "node-roon-api": "github:roonlabs/node-roon-api",
     "node-roon-api-image": "github:roonlabs/node-roon-api-image",
