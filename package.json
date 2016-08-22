@@ -6,8 +6,8 @@
   "author": "Roon Labs, LLC",
   "license": "Apache-2.0",
   "scripts": {
-      "build": "browserify app.js -o bundle.js -t partialify -u xml2js -u ws -u fs",
-      "dev": "watchify -d app.js -o bundle.js -t partialify -u xml2js -u ws -u fs"
+      "build": "browserify app.js -o bundle.js -t partialify -u xml2js -u ws -u fs -u network",
+      "dev": "watchify -d  app.js -o bundle.js -t partialify -u xml2js -u ws -u fs -u network"
   },
   "dependencies": {
     "node-roon-api": "github:roonlabs/node-roon-api",
