@@ -9,7 +9,7 @@ var RoonApi          = require("node-roon-api"),
 var core;
 var roon = new RoonApi();
 
-Vue.config.devtools = true; 
+Vue.config.devtools = true;
 
 var v = new Vue({
     el: "#app",
@@ -47,14 +47,14 @@ var v = new Vue({
             core.services.RoonApiTransport.control(this.zone, 'next');
         },
         list_item: function(item) {
-            if (!item.input_prompt) 
+            if (!item.input_prompt)
                 refresh_browse({ item_key: item.item_key });
         },
         list_input: function(item) {
             let val = (item.input_prompt.value || "").trim();
             if (val === "")
                 return;
-            if (item.input_prompt) 
+            if (item.input_prompt)
                 refresh_browse({ item_key: item.item_key, input: val });
         },
         list_back: function() {
