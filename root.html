@@ -16,6 +16,48 @@
     margin-right: 1em;
     width: 100px;
 }
+
+.browser {
+    margin-top: 30px;
+    width: 400px;
+}
+.browsertitle {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.browsersubtitle {
+    font-size: 0.9em;
+}
+
+.browseitems {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.browseitem {
+    cursor: pointer;
+    background-color: #eee;
+    color: #0000ff;
+}
+.browseitem:hover {
+    cursor: pointer;
+    background-color: #888;
+    color: #fff;
+}
+.browseitem:first-child {
+    border-top: 1px solid #aaa;
+}
+.browseitem {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    border-bottom: 1px solid #aaa;
+}
+.browseitemtitle {
+    font-size: 1.0em;
+}
+.browseitemsubtitle {
+    font-size: 0.85em;
+}
 </style>
 
 <div v-if='status == "connecting"'>
@@ -50,4 +92,41 @@
 
     </div>
 </div>
+
+<div class='browser' v-if='list'>
+    <div>
+        <div style='display: inline-block;'>
+            <a href="back" v-if='list.level != 0' @click.prevent='list_back()'>Back</a>
+            <a href="home" v-if='list.level != 0' @click.prevent='list_home()'>Home</a>
+            <a href="refresh" @click.prevent='list_refresh()'>Refresh</a>
+        </div>
+        <div style='display: inline-block;'>
+            <span class='browsertitle'>{{list.title}}</span><br>
+            <span class='browsersubtitle'>{{list.subtitle}}</span>
+        </div>
+    </div>
+    <div>
+        <div style='float: right;' v-if='list.count != items.length'>
+            <tt><a style='text-decoration: none;' href='previouspage' @click.prevent='list_next_page'>&lt;&lt;</a></tt>
+            {{listoffset+1}}-{{listoffset + items.length}} of {{list.count}}
+            <tt><a style='text-decoration: none;' href='nextpage' @click.prevent='list_prev_page'>&gt;&gt;</a></tt>
+        </div>
+    </div>
+    <div class='browseitems'>
+        <div v-for='item in items' class='browseitem' @click.prevent='list_item(item)'>
+            <div class='browseitemtitle'>{{item.title}}</div>
+            <div class='browseitemsubtitle'>{{item.subtitle}}</div>
+        </div>
+    </div>
+    <div>
+        <div style='float: right;' v-if='list.count != items.length'>
+            Viewing {{listoffset+1}}-{{listoffset + items.length}} of {{list.count}}
+        </div>
+    </div>
+</div>
+
+
+
+
+
 </div>
