@@ -11,37 +11,6 @@ var roon = new RoonApi();
 
 Vue.config.devtools = true; 
 
-var vzi = Vue.extend({
-    template: '<img :src="src">',
-    props: [ 'zone' ],
-    data: function() { return { src: '' }; },
-    created: function() {
-        var self = this;
-        var up = function() {
-            if (self.zone &&
-                self.zone.now_playing &&
-                self.zone.now_playing.image_key)
-            {
-            core.services.RoonApiImage.get_image(self.zone.now_playing.image_key,
-                                                 {
-                                                     width:  100,
-                                                     height: 100,
-                                                     scale:  'fit',
-                                                 },
-                                                 function(err, contenttype, img) {
-                                                     self.$set('src', window.URL.createObjectURL(new Blob([ img ], { 'type': contenttype })));
-                                                 });
-
-            } else {
-                self.$set('src', '');
-            }
-        };
-        this.$watch('zone.now_playing.image_key', up);
-        up();
-    }
-});
-Vue.component('zone-image', vzi);
-
 var v = new Vue({
     el: "#app",
     template: require('./root.html'),
@@ -78,7 +47,15 @@ var v = new Vue({
             core.services.RoonApiTransport.control(this.zone, 'next');
         },
         list_item: function(item) {
-            refresh_browse({ item_key: item.item_key });
+            if (!item.input_prompt) 
+                refresh_browse({ item_key: item.item_key });
+        },
+        list_input: function(item) {
+            let val = (item.input_prompt.value || "").trim();
+            if (val === "")
+                return;
+            if (item.input_prompt) 
+                refresh_browse({ item_key: item.item_key, input: val });
         },
         list_back: function() {
             refresh_browse({ pop_levels: 1 });
