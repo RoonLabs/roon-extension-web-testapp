@@ -60,6 +60,7 @@ var v = new Vue({
     },
     watch: {
         'current_zone_id': function(val, oldval) {
+            roon.save_config("current_zone_id", val);
             refresh_browse();
         }
     },
@@ -163,6 +164,7 @@ var extension = roon.extension({
     provided_services:   [ ],
 
     core_paired: function(core_) {
+        v.current_zone_id = roon.load_config("current_zone_id");
         core = core_;
         core.services.RoonApiTransport.subscribe_zones((response, msg) => {
             if (response == "Subscribed") {

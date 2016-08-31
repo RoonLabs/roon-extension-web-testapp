@@ -69,12 +69,12 @@
     </select>
 
     <div v-if='zone' class='zonetitle'>
-        {{zone.display_name}} ({{zone.state}})
+        {{zone.display_name}} ({{zone.state}})   {{zone.now_playing.image_key}}
     </div>
     <div class='nowplaying' v-if='zone && zone.now_playing'>
         <div>
             <div style='display: inline-block;'>
-                <zone-image v-if='zone.now_playing.image_key' :zone='zone'></zone-image>
+                <img v-if='zone.now_playing.image_key' src='http://localhost:9100/api/image/{{zone.now_playing.image_key}}?scale=fit&width=100&height=100'>
             </div>
             <div style='display: inline-block;'>
                 <div>{{zone.now_playing.three_line.line1}}</div>
@@ -94,22 +94,20 @@
 </div>
 
 <div class='browser' v-if='list'>
+    <div style='margin-bottom: 20px;'>
+        <a style='margin-right: 10px;' href="back" v-if='list.level != 0' @click.prevent='list_back()'>Back</a>
+        <a style='margin-right: 10px;' href="home" v-if='list.level != 0' @click.prevent='list_home()'>Home</a>
+        <a style='margin-right: 10px;' href="refresh" @click.prevent='list_refresh()'>Refresh</a>
+    </div>
     <div>
-        <div style='display: inline-block;'>
-            <a href="back" v-if='list.level != 0' @click.prevent='list_back()'>Back</a>
-            <a href="home" v-if='list.level != 0' @click.prevent='list_home()'>Home</a>
-            <a href="refresh" @click.prevent='list_refresh()'>Refresh</a>
-        </div>
-        <div style='display: inline-block;'>
-            <span class='browsertitle'>{{list.title}}</span><br>
-            <span class='browsersubtitle'>{{list.subtitle}}</span>
-        </div>
+        <span class='browsertitle'>{{list.title}}</span><br>
+        <span class='browsersubtitle'>{{list.subtitle}}</span>
     </div>
     <div>
         <div style='float: right;' v-if='list.count != items.length'>
-            <tt><a style='text-decoration: none;' href='previouspage' @click.prevent='list_next_page'>&lt;&lt;</a></tt>
+            <tt v-if='listoffset != 0'><a style='text-decoration: none;' href='previouspage' @click.prevent='list_prev_page'>&lt;&lt;</a>&nbsp;</tt>
             {{listoffset+1}}-{{listoffset + items.length}} of {{list.count}}
-            <tt><a style='text-decoration: none;' href='nextpage' @click.prevent='list_prev_page'>&gt;&gt;</a></tt>
+            <tt v-if='listoffset + items.length < list.count'>&nbsp;<a style='text-decoration: none;' href='nextpage' @click.prevent='list_next_page'>&gt;&gt;</a></tt>
         </div>
     </div>
     <div class='browseitems'>
@@ -120,7 +118,9 @@
     </div>
     <div>
         <div style='float: right;' v-if='list.count != items.length'>
-            Viewing {{listoffset+1}}-{{listoffset + items.length}} of {{list.count}}
+            <tt v-if='listoffset != 0'><a style='text-decoration: none;' href='previouspage' @click.prevent='list_prev_page'>&lt;&lt;</a>&nbsp;</tt>
+            {{listoffset+1}}-{{listoffset + items.length}} of {{list.count}}
+            <tt v-if='listoffset + items.length < list.count'>&nbsp;<a style='text-decoration: none;' href='nextpage' @click.prevent='list_next_page'>&gt;&gt;</a></tt>
         </div>
     </div>
 </div>
