@@ -31,7 +31,7 @@
 
 .browseitems {
     margin-left: 20px;
-    margin-top: 20px;
+    margin-top: 1em;
 }
 
 .browseitemnormal {
@@ -81,7 +81,7 @@ form {
     <div class='nowplaying' v-if='zone && zone.now_playing'>
         <div>
             <div style='display: inline-block;'>
-                <img v-if='zone.now_playing.image_key' src='http://localhost:9100/api/image/{{zone.now_playing.image_key}}?scale=fit&width=100&height=100'>
+                <img v-if='zone.now_playing.image_key' :src="'http://localhost:9100/api/image/' + zone.now_playing.image_key + '?scale=fit&width=100&height=100'">
             </div>
             <div style='display: inline-block;'>
                 <div>{{zone.now_playing.three_line.line1}}</div>
@@ -107,21 +107,21 @@ form {
         <a style='margin-right: 10px;' href="refresh" @click.prevent='list_refresh()'>Refresh</a>
     </div>
     <div>
-        <img style='float: left; margin-right: 10px;' v-if='list.image_key' src='http://localhost:9100/api/image/{{list.image_key}}?scale=fit&width=100&height=100'>
+        <img style='float: left; margin-right: 10px;' v-if='list.image_key' :src="'http://localhost:9100/api/image/' + list.image_key + '?scale=fit&width=100&height=100'">
         <span class='browsertitle'>{{list.title}}</span><br>
         <span class='browsersubtitle'>{{list.subtitle}}</span>
     </div>
-    <div>
+    <div style='clear:both;'>
         <div style='float: right;' v-if='list.count != items.length'>
             <tt v-if='listoffset != 0'><a style='text-decoration: none;' href='previouspage' @click.prevent='list_prev_page'>&lt;&lt;</a>&nbsp;</tt>
             {{listoffset+1}}-{{listoffset + items.length}} of {{list.count}}
             <tt v-if='listoffset + items.length < list.count'>&nbsp;<a style='text-decoration: none;' href='nextpage' @click.prevent='list_next_page'>&gt;&gt;</a></tt>
         </div>
     </div>
-    <div class='browseitems'>
+    <div class='browseitems' style='clear:both;'>
         <div v-for='item in items' class='browseitem {{item.input_prompt ? "browseiteminput" : "browseitemnormal"}}'>
             <form v-if='item.input_prompt' action='submit' @submit.prevent='list_input(item)'>
-                <img style='float: right; margin-left: 10px;' v-if='item.image_key' src='http://localhost:9100/api/image/{{item.image_key}}?scale=fit&width=100&height=100'>
+                <img style='float: right; margin: 0 1em;' v-if='item.image_key' :src="'http://localhost:9100/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
                 <div>
                     {{item.input_prompt.prompt}}
                 </div>
@@ -129,11 +129,13 @@ form {
                     <input type='{{item.input_prompt.is_password ? "password" : "text"}}' v-model='item.input_prompt.value'>
                     <input type='submit' value='{{item.input_prompt.action}}' @click.prevent='list_input(item)'>
                 </div>
+                <br v-if='item.image_key' style='clear:both'/>
             </form>
             <div v-else @click.prevent='list_item(item)'>
-                <img style='float: right; margin-left: 10px;' v-if='item.image_key' src='http://localhost:9100/api/image/{{item.image_key}}?scale=fit&width=100&height=100'>
+                <img style='float: right; margin: 0 1em' v-if='item.image_key' :src="'http://localhost:9100/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
                 <div class='browseitemtitle'>{{item.title}}</div>
                 <div class='browseitemsubtitle'>{{item.subtitle}}</div>
+                <br v-if='item.image_key' style='clear:both'/>
             </div>
         </div>
     </div>
