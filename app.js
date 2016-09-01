@@ -90,7 +90,6 @@ function refresh_browse(opts) {
     opts = Object.assign({
         hierarchy:          "browse",
         zone_or_output_id:  v.current_zone_id,
-        set_display_offset: v.listoffset,
     }, opts);
 
     core.services.RoonApiBrowse.browse(opts, (err, r) => {
@@ -135,7 +134,11 @@ function refresh_browse(opts) {
 }
 
 function load_browse(listoffset) {
-    core.services.RoonApiBrowse.load({ hierarchy: "browse", offset: listoffset, set_display_offset: listoffset }, (err, r) => {
+    core.services.RoonApiBrowse.load({
+        hierarchy:          "browse",
+        offset:             listoffset,
+        set_display_offset: listoffset,
+    }, (err, r) => {
         v.$set("listoffset", listoffset);
         v.$set("items", r.items);
     });
