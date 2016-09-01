@@ -1,6 +1,9 @@
 <div>
 
 <style>
+body {
+    font-family: sans-serif;
+}
 .zonetitle {
     padding-top: 1em;
     font-size: 2em;
@@ -13,7 +16,7 @@
     padding-top: 1em;
 }
 .nowplaying .buttons > button {
-    margin-right: 1em;
+    margin-right: 10px;
     width: 100px;
 }
 
@@ -38,6 +41,9 @@
     cursor: pointer;
     background-color: #eee;
     color: #0000ff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
 }
 .browseitemnormal:hover {
     cursor: pointer;
@@ -46,21 +52,21 @@
 }
 .browseiteminput {
     background-color: #eee;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
 }
 .browseitem:first-child {
     border-top: 1px solid #aaa;
 }
 .browseitem {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
     border-bottom: 1px solid #aaa;
 }
 .browseitemtitle {
     font-size: 1.0em;
 }
 .browseitemsubtitle {
-    font-size: 0.85em;
+    font-size: 0.80em;
 }
 form {
     margin: 0;
@@ -96,6 +102,11 @@ form {
             <button @click="transport_previous">&lt;&lt;</button>
             <button @click="transport_next">&gt;&gt;</button>
         </div>
+        <div style='margin-top: 1em;'>
+            <tt style='display: inline-block; font-size: 0.8em'>{{to_time(zone.now_playing.seek_position)}}/{{to_time(zone.now_playing.length)}}</tt>
+            <div style='width: 440px; height: 4px; background-color: #aaa;'>
+            <div style='width: {{440 * zone.now_playing.seek_position / zone.now_playing.length}}px; height: 4px; background-color: #000;'>
+        </div>
 
     </div>
 </div>
@@ -119,8 +130,8 @@ form {
         </div>
     </div>
     <div class='browseitems' style='clear:both;'>
-        <div v-for='item in items' class='browseitem {{item.input_prompt ? "browseiteminput" : "browseitemnormal"}}'>
-            <form v-if='item.input_prompt' action='submit' @submit.prevent='list_input(item)'>
+        <div v-for='item in items' class='browseitem'>
+            <form v-if='item.input_prompt' action='submit' @submit.prevent='list_input(item)' class='browseiteminput'>
                 <img style='float: right; margin: 0 1em;' v-if='item.image_key' :src="'http://localhost:9100/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
                 <div>
                     {{item.input_prompt.prompt}}
@@ -131,7 +142,7 @@ form {
                 </div>
                 <br v-if='item.image_key' style='clear:both'/>
             </form>
-            <div v-else @click.prevent='list_item(item)'>
+            <div v-else @click.prevent='list_item(item)' class='browseitemnormal'>
                 <img style='float: right; margin: 0 1em' v-if='item.image_key' :src="'http://localhost:9100/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
                 <div class='browseitemtitle'>{{item.title}}</div>
                 <div class='browseitemsubtitle'>{{item.subtitle}}</div>
