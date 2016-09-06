@@ -102,10 +102,10 @@ form {
             <button @click="transport_previous">&lt;&lt;</button>
             <button @click="transport_next">&gt;&gt;</button>
         </div>
-        <div style='margin-top: 1em;'>
+        <div style='margin-top: 1em;' v-if='zone.state != "loading"'>
             <tt style='display: inline-block; font-size: 0.8em'>{{to_time(zone.now_playing.seek_position)}}/{{to_time(zone.now_playing.length)}}</tt>
-            <div style='width: 440px; height: 4px; background-color: #aaa;'>
-            <div style='width: {{440 * zone.now_playing.seek_position / zone.now_playing.length}}px; height: 4px; background-color: #000;'>
+            <div :style='{ width: "440px", height: "4px", "background-color": "#aaa" }'>
+            <div :style='{ width: 440 * zone.now_playing.seek_position / zone.now_playing.length + "px", height: "4px", "background-color": "#000" }'></div></div>
         </div>
 
     </div>
