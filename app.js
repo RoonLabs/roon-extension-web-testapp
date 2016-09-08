@@ -7,7 +7,41 @@ var RoonApi          = require("node-roon-api"),
     Vue              = require('vue');
 
 var core;
-var roon = new RoonApi();
+var roon = new RoonApi({
+    extension_id:        'com.roonlabs.web.testapp',
+    display_name:        'Roon API Web Test Application',
+    display_version:     "1.0.0",
+    publisher:           'Roon Labs, LLC',
+    email:               'contact@roonlabs.com',
+    required_services:   [ RoonApiBrowse, RoonApiTransport, RoonApiImage ],
+    optional_services:   [ ],
+    provided_services:   [ ],
+
+    core_paired: function(core_) {
+        v.current_zone_id = roon.load_config("current_zone_id");
+        core = core_;
+        core.services.RoonApiTransport.subscribe_zones((response, msg) => {
+            if (response == "Subscribed") {
+                let zones = msg.zones.reduce((p,e) => (p[e.zone_id] = e) && p, {});
+                v.$set('zones', zones);
+            } else if (response == "Changed") {
+                var z;
+                if (msg.zones_removed) msg.zones_removed.forEach(e => delete(v.zones[e.zone_id]));
+                if (msg.zones_added)   msg.zones_added  .forEach(e => v.zones[e.zone_id] = e);
+                if (msg.zones_changed) msg.zones_changed.forEach(e => v.zones[e.zone_id] = e);
+                v.$set('zones', v.zones);
+            }
+        });
+        v.status = 'connected';
+
+        v.listoffset = 0;
+        refresh_browse();
+    },
+    core_unpaired: function(core_) {
+	core = undefined;
+        v.status = 'disconnected';
+    }
+});
 
 Vue.config.devtools = true;
 
@@ -143,43 +177,6 @@ function load_browse(listoffset) {
         v.$set("items", r.items);
     });
 }
-
-var extension = roon.extension({
-    extension_id:        'com.roonlabs.web.testapp',
-    display_name:        'Roon API Web Test Application',
-    display_version:     "1.0.0",
-    publisher:           'Roon Labs, LLC',
-    email:               'contact@roonlabs.com',
-    required_services:   [ RoonApiBrowse, RoonApiTransport, RoonApiImage ],
-    optional_services:   [ ],
-    provided_services:   [ ],
-
-    core_paired: function(core_) {
-        v.current_zone_id = roon.load_config("current_zone_id");
-        core = core_;
-        core.services.RoonApiTransport.subscribe_zones((response, msg) => {
-            if (response == "Subscribed") {
-                let zones = msg.zones.reduce((p,e) => (p[e.zone_id] = e) && p, {});
-                v.$set('zones', zones);
-            } else if (response == "Changed") {
-                var z;
-                if (msg.zones_removed) msg.zones_removed.forEach(e => delete(v.zones[e.zone_id]));
-                if (msg.zones_added)   msg.zones_added  .forEach(e => v.zones[e.zone_id] = e);
-                if (msg.zones_changed) msg.zones_changed.forEach(e => v.zones[e.zone_id] = e);
-                v.$set('zones', v.zones);
-            }
-        });
-        v.status = 'connected';
-
-        v.listoffset = 0;
-        refresh_browse();
-    },
-    core_unpaired: function(core_) {
-	core = undefined;
-        v.status = 'disconnected';
-    }
-});
-
 
 var go = function() {
     v.status = 'connecting';
