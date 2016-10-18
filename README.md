@@ -4,7 +4,7 @@ Then, modules needed for the Roon API and for the dev tools:
 
 ```bash
 npm install
-npm install -g browsify
+npm install -g browserify
 npm install -g watchify
 ```
 
