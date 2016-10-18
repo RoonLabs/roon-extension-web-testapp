@@ -13,9 +13,6 @@ var roon = new RoonApi({
     display_version:     "1.0.0",
     publisher:           'Roon Labs, LLC',
     email:               'contact@roonlabs.com',
-    required_services:   [ RoonApiBrowse, RoonApiTransport, RoonApiImage ],
-    optional_services:   [ ],
-    provided_services:   [ ],
 
     core_paired: function(core_) {
         v.current_zone_id = roon.load_config("current_zone_id");
@@ -41,6 +38,10 @@ var roon = new RoonApi({
 	core = undefined;
         v.status = 'disconnected';
     }
+});
+
+roon.init_services({
+    required_services:   [ RoonApiBrowse, RoonApiTransport, RoonApiImage ],
 });
 
 Vue.config.devtools = true;
