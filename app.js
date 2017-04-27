@@ -181,6 +181,6 @@ function load_browse(listoffset) {
 
 var go = function() {
     v.status = 'connecting';
-    extension.connect("localhost:9100", () => setTimeout(go, 3000));
+    roon.connect("localhost:9100", () => setTimeout(go, 3000));
 };
 go();
