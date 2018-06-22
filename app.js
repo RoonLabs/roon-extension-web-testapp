@@ -50,7 +50,8 @@ var v = new Vue({
     el: "#app",
     template: require('./root.html'),
     data: function() { return {
-    server_domain: 'localhost:9100',
+    server_ip: 'localhost',
+    server_port: 9100,
     status:          'foo',
         zones:           [],
         current_zone_id: null,
@@ -182,6 +183,6 @@ function load_browse(listoffset) {
 
 var go = function() {
     v.status = 'connecting';
-    roon.connect(v.server_domain, () => setTimeout(go, 3000));
+    roon.connect_to_host(v.server_ip, v.server_port, v.server_port, () => setTimeout(go, 3000));
 };
 go();
