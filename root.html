@@ -87,7 +87,7 @@ form {
     <div class='nowplaying' v-if='zone && zone.now_playing'>
         <div>
             <div style='display: inline-block;'>
-                <img v-if='zone.now_playing.image_key' :src="'http://' + server_domain + '/api/image/' + zone.now_playing.image_key + '?scale=fit&width=100&height=100'">
+                <img v-if='zone.now_playing.image_key' :src="'http://' + server_ip + '/api/image/' + zone.now_playing.image_key + '?scale=fit&width=100&height=100'">
             </div>
             <div style='display: inline-block;'>
                 <div>{{zone.now_playing.three_line.line1}}</div>
