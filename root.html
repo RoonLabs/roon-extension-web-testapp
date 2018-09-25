@@ -87,7 +87,7 @@ form {
     <div class='nowplaying' v-if='zone && zone.now_playing'>
         <div>
             <div style='display: inline-block;'>
-                <img v-if='zone.now_playing.image_key' :src="'http://' + server_ip + '/api/image/' + zone.now_playing.image_key + '?scale=fit&width=100&height=100'">
+                <img v-if='zone.now_playing.image_key' :src="'http://' + server_ip + ':' + server_port + '/api/image/' + zone.now_playing.image_key + '?scale=fit&width=100&height=100'">
             </div>
             <div style='display: inline-block;'>
                 <div>{{zone.now_playing.three_line.line1}}</div>
@@ -118,7 +118,7 @@ form {
         <a style='margin-right: 10px;' href="refresh" @click.prevent='list_refresh()'>Refresh</a>
     </div>
     <div>
-        <img style='float: left; margin-right: 10px;' v-if='list.image_key' :src="'http://' + server_ip + '/api/image/' + list.image_key + '?scale=fit&width=100&height=100'">
+        <img style='float: left; margin-right: 10px;' v-if='list.image_key' :src="'http://' + server_ip + ':' + server_port + '/api/image/' + list.image_key + '?scale=fit&width=100&height=100'">
         <span class='browsertitle'>{{list.title}}</span><br>
         <span class='browsersubtitle'>{{list.subtitle}}</span>
     </div>
@@ -132,7 +132,7 @@ form {
     <div class='browseitems' style='clear:both;'>
         <div v-for='item in items' class='browseitem'>
             <form v-if='item.input_prompt' action='submit' @submit.prevent='list_input(item)' class='browseiteminput'>
-                <img style='float: right; margin: 0 1em;' v-if='item.image_key' :src="'http://' + server_ip + '/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
+                <img style='float: right; margin: 0 1em;' v-if='item.image_key' :src="'http://' + server_ip + ':' + server_port + '/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
                 <div>
                     {{item.input_prompt.prompt}}
                 </div>
@@ -143,7 +143,7 @@ form {
                 <br v-if='item.image_key' style='clear:both'/>
             </form>
             <div v-else @click.prevent='list_item(item)' class='browseitemnormal'>
-                <img style='float: right; margin: 0 1em' v-if='item.image_key' :src="'http://' + server_ip + '/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
+                <img style='float: right; margin: 0 1em' v-if='item.image_key' :src="'http://' + server_ip + ':' + server_port + '/api/image/' + item.image_key + '?scale=fit&width=100&height=100'">
                 <div class='browseitemtitle'>{{item.title}}</div>
                 <div class='browseitemsubtitle'>{{item.subtitle}}</div>
                 <br v-if='item.image_key' style='clear:both'/>
