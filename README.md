@@ -1,11 +1,9 @@
-Make sure you have NodeJS 5.x or higher.
+Make sure you have NodeJS 8.x or higher.
 
 Then, modules needed for the Roon API and for the dev tools: 
 
 ```bash
 npm install
-npm install -g browserify
-npm install -g watchify
 ```
 
 
