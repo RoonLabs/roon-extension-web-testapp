@@ -47,17 +47,20 @@ roon.init_services({
 Vue.config.devtools = true;
 
 var v = new Vue({
-    el: "#app",
-    template: require('./root.html'),
-    data: function() { return {
-    server_domain: '10.0.0.225',
-    status:          'foo',
-        zones:           [],
-        current_zone_id: null,
-        listoffset:      0,
-        list:            null,
-        items:           [],
-    }},
+    el:                  "#app",
+    template:            require('./root.html'),
+    data:                function() {
+        return {
+            server_ip:       '127.0.0.1',
+            server_port:     9100,
+            status:          'foo',
+            zones:           [],
+            current_zone_id: null,
+            listoffset:      0,
+            list:            null,
+            items:           [],
+        }
+    },
     computed: {
         zone: function () {
             return this.zones[this.current_zone_id];
@@ -182,6 +185,6 @@ function load_browse(listoffset) {
 
 var go = function() {
     v.status = 'connecting';
-    roon.ws_connect({ host: v.server_domain, port: 9150, onclose: () => setTimeout(go, 3000) });
+    roon.ws_connect({ host: v.server_ip, port: v.server_port, onclose: () => setTimeout(go, 3000) });
 };
 go();
