@@ -74,7 +74,11 @@ form {
 </style>
 
 <div v-if='status == "connecting"'>
-    Connecting...
+    <p>Connecting to your Roon Core... you may need to approve/enable this extension from within the Roon app.</p>
+    <p>
+    Visit <tt>Roon &gt; Settings &gt; Extensions</tt> and
+    enable the <tt>Roon API West Test Extension</tt>.
+    </p>
 </div>
 <div v-else>
     Zone: &nbsp; <select v-model="current_zone_id">
@@ -82,7 +86,7 @@ form {
     </select>
 
     <div v-if='zone' class='zonetitle'>
-        {{zone.display_name}} ({{zone.state}})   {{zone.now_playing.image_key}}
+        {{zone.display_name}} ({{zone.state}})
     </div>
     <div class='nowplaying' v-if='zone && zone.now_playing'>
         <div>
