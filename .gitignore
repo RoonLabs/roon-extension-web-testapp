@@ -1,2 +1,5 @@
 node_modules
 bundle.js
+.cache/
+package-lock.json
+dist/

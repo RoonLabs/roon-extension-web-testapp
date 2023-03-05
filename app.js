@@ -3,6 +3,7 @@
 var RoonApi          = require("node-roon-api"),
     RoonApiTransport = require('node-roon-api-transport'),
     RoonApiImage     = require('node-roon-api-image'),
+    RoonApiStatus    = require("node-roon-api-status"),
     RoonApiBrowse    = require('node-roon-api-browse'),
     Vue              = require('vue');
 
@@ -35,9 +36,10 @@ var roon = new RoonApi({
         refresh_browse();
     },
     core_unpaired: function(core_) {
-	core = undefined;
+	    core = undefined;
         v.status = 'disconnected';
-    }
+    },
+
 });
 
 roon.init_services({
@@ -51,9 +53,9 @@ var v = new Vue({
     template:            require('./root.html'),
     data:                function() {
         return {
-            server_ip:       '127.0.0.1',
-            server_port:     9100,
-            status:          'foo',
+            server_ip:       '192.168.1.10',
+            server_port:     9330,
+            status:          'ready',
             zones:           [],
             current_zone_id: null,
             listoffset:      0,
@@ -183,8 +185,24 @@ function load_browse(listoffset) {
     });
 }
 
-var go = function() {
-    v.status = 'connecting';
-    roon.ws_connect({ host: v.server_ip, port: v.server_port, onclose: () => setTimeout(go, 3000) });
+WebSocket.prototype.on = function(event, handler) {
+    this.addEventListener(event, handler);
 };
+WebSocket.prototype.ping = function() {
+    this.send("__ping__");
+};
+WebSocket.prototype.terminate = function() { 
+    this.close();
+};
+
+var go = function(status) {
+    v.status = status || 'connecting';
+    console.log("Connecting to Roon...");
+    roon.ws_connect({ host: v.server_ip, port: v.server_port, onclose: () => {
+        console.log(v.status);
+    }});
+};
+
 go();
+
+var interval = setInterval(() => go("reconnecting"), 8000);
