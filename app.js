@@ -195,20 +195,14 @@ WebSocket.prototype.terminate = function() {
     this.close();
 };
 
-var go = function() {
-    v.status = 'connecting';
+var go = function(status) {
+    v.status = status || 'connecting';
     console.log("Connecting to Roon...");
     roon.ws_connect({ host: v.server_ip, port: v.server_port, onclose: () => {
         console.log(v.status);
-        /*
-        if (v.status != 'connected') {
-            setTimeout(go, 500);
-            console.log("Detected connection closing, trying to reconnect...");
-        }
-        */
     }});
 };
 
 go();
 
-var interval = setInterval(go, 8000);
+var interval = setInterval(() => go("reconnecting"), 8000);
